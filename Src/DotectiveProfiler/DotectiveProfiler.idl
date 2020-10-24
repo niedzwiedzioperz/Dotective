@@ -1,0 +1,36 @@
+// DotectiveProfiler.idl : IDL source for DotectiveProfiler
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (DotectiveProfiler.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	object,
+	uuid(49bd1c5e-de09-4150-855e-3a2c55f6fd97),
+	dual,
+	nonextensible,
+	pointer_default(unique)
+]
+interface IDotectiveProfilerObject : IDispatch
+{
+};
+[
+	uuid(15aa8c6f-ef6b-45fe-9142-25907eeb0370),
+	version(1.0),
+]
+library DotectiveProfilerLib
+{
+	importlib("stdole2.tlb");
+	[
+		uuid(8bae2cc3-5f66-4981-82e8-e47ba7eb08bf)
+	]
+	coclass DotectiveProfilerObject
+	{
+		[default] interface IDotectiveProfilerObject;
+	};
+};
+
+import "shobjidl.idl";
