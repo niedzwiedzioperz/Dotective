@@ -1,4 +1,5 @@
-﻿using Dotective.Profiler;
+﻿using Dotective.Internals;
+using Dotective.Profiler;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -26,12 +27,27 @@ namespace Dotective
 
             RegisterProfiler();
 
-            var process = RunProcess(profileePath);
-            var profilee = new Profilee(process);
+            var listener = CreateListener(profiler);
+            var listenerTask = listener.Start();
 
-            return new ProfilingContext(
-                profiler,
-                profilee);
+            try
+            {
+                var process = RunProcess(profileePath);
+                var profilee = new Profilee(process);
+
+                listenerTask.Wait();
+
+                return new ProfilingContext(
+                    profiler,
+                    profilee,
+                    listener);
+            }
+            catch
+            {
+                listener.Dispose();
+
+                throw;
+            }
         }
 
         private static void RegisterProfiler()
@@ -83,6 +99,14 @@ namespace Dotective
             psi.EnvironmentVariables.Add("COR_PROFILER", "{" + ProfilerGuid + "}");
 
             return Process.Start(psi);
+        }
+
+        private static DotectiveListener CreateListener(IProfiler profiler)
+        {
+            var link = new DotectiveLink();
+            var bridge = new ProfilerBridge(profiler);
+            
+            return new DotectiveListener(link, bridge);
         }
     }
 }

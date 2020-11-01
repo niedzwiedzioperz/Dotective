@@ -43,8 +43,13 @@
   <ItemGroup>
     <Compile Include="API\IProfilingContext.cs" />
     <Compile Include="API\IProfilee.cs" />
+    <Compile Include="Internals\CallbackType.cs" />
+    <Compile Include="Internals\DotectiveLink.cs" />
+    <Compile Include="Internals\DotectiveListener.cs" />
+    <Compile Include="Internals\DotectiveMessage.cs" />
     <Compile Include="Profilee.cs" />
     <Compile Include="API\Profiler\IProfiler.cs" />
+    <Compile Include="Internals\ProfilerBridge.cs" />
     <Compile Include="ProfilerRunner.cs" />
     <Compile Include="ProfilingContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

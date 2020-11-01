@@ -43,6 +43,15 @@
     <ClInclude Include="CorProfilerCallbackImpl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DotectiveLink.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CallbackType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DotectiveMessage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DotectiveProfiler.cpp">
@@ -61,6 +70,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CorProfilerCallbackImpl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DotectiveLink.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DotectiveMessage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

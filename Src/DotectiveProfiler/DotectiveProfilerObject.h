@@ -7,6 +7,9 @@
 
 #include "DotectiveProfiler_i.h"
 #include "CorProfilerCallbackImpl.h"
+#include "DotectiveLink.h"
+#include "DotectiveMessage.h"
+#include "CallbackType.h"
 
 
 #if defined(_WIN32_WCE) && !defined(_CE_DCOM) && !defined(_CE_ALLOW_SINGLE_THREADED_OBJECTS_IN_MTA)
@@ -24,6 +27,9 @@ class ATL_NO_VTABLE CDotectiveProfilerObject :
 	public IDispatchImpl<IDotectiveProfilerObject, &IID_IDotectiveProfilerObject, &LIBID_DotectiveProfilerLib, /*wMajor =*/ 1, /*wMinor =*/ 0>,
 	public CorProfilerCallbackImpl
 {
+private:
+	DotectiveLink dotectiveLink;
+
 public:
 	CDotectiveProfilerObject()
 	{
@@ -44,20 +50,17 @@ END_COM_MAP()
 
 	DECLARE_PROTECT_FINAL_CONSTRUCT()
 
-	HRESULT FinalConstruct()
-	{
-		return S_OK;
-	}
-
-	void FinalRelease()
-	{
-	}
+	HRESULT FinalConstruct();
+	void FinalRelease();
 
 public:
 
 	STDMETHOD(Initialize)(IUnknown* pICorProfilerInfoUnk);
 	STDMETHOD(Shutdown)();
 
+private:
+	DotectiveMessage* HandleCallback(CallbackType callbackType, DotectiveMessage* message);
+	DotectiveMessage* CreateCallbackMessage();
 };
 
 OBJECT_ENTRY_AUTO(__uuidof(DotectiveProfilerObject), CDotectiveProfilerObject)

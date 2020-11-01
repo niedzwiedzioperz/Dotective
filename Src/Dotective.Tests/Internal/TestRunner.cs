@@ -24,6 +24,7 @@ namespace Dotective.Tests.Internal
             finally
             {
                 context?.Profilee.Process.WaitForExit();
+                context?.Dispose();
 
                 File.Delete(fileName);
             }
