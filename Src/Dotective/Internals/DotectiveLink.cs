@@ -16,7 +16,7 @@ namespace Dotective.Internals
         {
             _sharedMemory = MemoryMappedFile.CreateNew("DotectiveMemory", 1048576, MemoryMappedFileAccess.ReadWriteExecute, MemoryMappedFileOptions.None, HandleInheritability.None);
             _accessor = _sharedMemory.CreateViewAccessor();
-            _pipe = new NamedPipeServerStream("DotectivePipe", PipeDirection.InOut, 1);
+            _pipe = new NamedPipeServerStream("DotectivePipe", PipeDirection.InOut, 1, PipeTransmissionMode.Message);
         }
 
         public void Connect()
@@ -38,7 +38,12 @@ namespace Dotective.Internals
 
             try
             {
-                _pipe.Read(message.Buffer, 0, length);
+                var readBytes = _pipe.Read(message.Buffer, 0, length);
+                if (readBytes != length)
+                {
+                    throw new InvalidOperationException($"Invalid message length. Expected {length} bytes, but read {readBytes} bytes.");
+                }
+
                 message.AddLength(length);
             }
             catch

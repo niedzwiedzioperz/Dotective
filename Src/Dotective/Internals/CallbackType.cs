@@ -2,7 +2,7 @@
 {
     internal enum CallbackType : byte
     {
-        Initialize = 1,
-        Shutdown = 2
+        Initialize = 0,
+        Shutdown = 1
     }
 }

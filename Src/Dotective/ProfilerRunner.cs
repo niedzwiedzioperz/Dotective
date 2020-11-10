@@ -1,5 +1,8 @@
 ﻿using Dotective.Internals;
+using Dotective.Internals.Callbacks;
+using Dotective.Metadata;
 using Dotective.Profiler;
+using Dotective.Runtime;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -27,7 +30,10 @@ namespace Dotective
 
             RegisterProfiler();
 
-            var listener = CreateListener(profiler);
+            var link = new DotectiveLink();
+            var bridge = new ProfilerBridge();
+            var listener = new DotectiveListener(link, bridge);
+
             var listenerTask = listener.Start();
 
             try
@@ -37,10 +43,7 @@ namespace Dotective
 
                 listenerTask.Wait();
 
-                return new ProfilingContext(
-                    profiler,
-                    profilee,
-                    listener);
+                return CreateContext(profiler, profilee, listener, bridge);
             }
             catch
             {
@@ -101,12 +104,30 @@ namespace Dotective
             return Process.Start(psi);
         }
 
-        private static DotectiveListener CreateListener(IProfiler profiler)
+        private static ProfilingContext CreateContext(IProfiler profiler, IProfilee profilee, DotectiveListener listener, ProfilerBridge bridge)
         {
-            var link = new DotectiveLink();
-            var bridge = new ProfilerBridge(profiler);
-            
-            return new DotectiveListener(link, bridge);
+            var runtmeInfo = SetUpRuntimeInfo();
+            var metadataInfo = SetUpMetadataInfo();
+            var context = new ProfilingContext(
+                listener,
+                profiler,
+                profilee,
+                runtmeInfo,
+                runtmeInfo,
+                metadataInfo);
+
+            SetUpCallbacks(bridge, context);
+
+            return context;
         }
+
+        private static RuntimeInfo SetUpRuntimeInfo() => new RuntimeInfo();
+
+        private static MetadataInfo SetUpMetadataInfo() => new MetadataInfo();
+
+        private static void SetUpCallbacks(ProfilerBridge bridge, IProfilingContext context)
+            => bridge
+            .AddCallback(new InitializeCallback(context))
+            .AddCallback(new ShutdownCallback(context));
     }
 }

@@ -1,34 +1,44 @@
-﻿using Dotective.Profiler;
-using System;
+﻿using System;
+using System.Linq;
 
 namespace Dotective.Internals
 {
     internal class ProfilerBridge
     {
-        private readonly IProfiler _profiler;
+        private readonly ProfilerCallback[] _callbacks;
 
-        public ProfilerBridge(
-            IProfiler profiler)
+        public ProfilerBridge()
         {
-            if (profiler == null)
-            {
-                throw new ArgumentNullException(nameof(profiler));
-            }
+            var maxValue = Enum
+                .GetValues(typeof(CallbackType))
+                .OfType<CallbackType>()
+                .Max(t => (byte)t);
 
-            _profiler = profiler;
+            _callbacks = new ProfilerCallback[maxValue + 1];
         }
 
-        public void HandleCallback(DotectiveMessage message)
+        public ProfilerBridge AddCallback(ProfilerCallback callback)
         {
-            switch ((CallbackType)message.Buffer[0])
+            if (callback == null)
             {
-                case CallbackType.Initialize:
-                    _profiler.Initialize();
-                    break;
-                case CallbackType.Shutdown:
-                    _profiler.Shutdown();
-                    break;
+                throw new ArgumentNullException(nameof(callback));
             }
+
+            _callbacks[(int)callback.Type] = callback;
+
+            return this;
+        }
+
+        public void Callback(DotectiveMessage message)
+        {
+            var callbackType = (int)message.Buffer[0];
+            if (callbackType < 0
+                || callbackType >= _callbacks.Length)
+            {
+                throw new InvalidOperationException("Invalid callback.");
+            }
+
+            _callbacks[callbackType]?.Invoke(message);
         }
     }
 }

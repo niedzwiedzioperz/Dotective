@@ -2,7 +2,7 @@
 {
     public interface IProfiler
     {
-        void Initialize();
+        void Initialize(IProfilingContext context);
         void Shutdown();
     }
 }

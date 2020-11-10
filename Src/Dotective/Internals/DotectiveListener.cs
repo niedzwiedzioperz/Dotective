@@ -62,7 +62,7 @@ namespace Dotective.Internals
                 {
                     try
                     {
-                        _profilerBridge.HandleCallback(message);
+                        _profilerBridge.Callback(message);
                     }
                     finally
                     {

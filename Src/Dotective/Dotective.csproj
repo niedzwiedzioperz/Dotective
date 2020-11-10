@@ -41,18 +41,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\Metadata\IMetadataInfo.cs" />
+    <Compile Include="API\Runtime\IRuntimeInfo.cs" />
+    <Compile Include="API\Profiler\IProfilerOptions.cs" />
     <Compile Include="API\IProfilingContext.cs" />
     <Compile Include="API\IProfilee.cs" />
+    <Compile Include="Internals\ProfilerCallback.cs" />
+    <Compile Include="Internals\Callbacks\InitializeCallback.cs" />
+    <Compile Include="Internals\Callbacks\ShutdownCallback.cs" />
     <Compile Include="Internals\CallbackType.cs" />
     <Compile Include="Internals\DotectiveLink.cs" />
     <Compile Include="Internals\DotectiveListener.cs" />
     <Compile Include="Internals\DotectiveMessage.cs" />
+    <Compile Include="Metadata\MetadataInfo.cs" />
     <Compile Include="Profilee.cs" />
     <Compile Include="API\Profiler\IProfiler.cs" />
     <Compile Include="Internals\ProfilerBridge.cs" />
     <Compile Include="ProfilerRunner.cs" />
     <Compile Include="ProfilingContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Runtime\RuntimeInfo.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

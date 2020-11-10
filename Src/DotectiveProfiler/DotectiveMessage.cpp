@@ -19,9 +19,9 @@ int DotectiveMessage::getLength()
 	return offset;
 }
 
-void DotectiveMessage::addLength(int offset)
+void DotectiveMessage::addLength(int length)
 {
-	this->offset += offset;
+	offset += length;
 }
 
 unsigned char* DotectiveMessage::getBuffer()

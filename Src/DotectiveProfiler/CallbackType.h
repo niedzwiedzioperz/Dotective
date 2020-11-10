@@ -2,6 +2,6 @@
 
 enum class CallbackType
 {
-	InitializeCallback = 1,
-	ShutdownCallback = 2
+	InitializeCallback = 0,
+	ShutdownCallback = 1
 };

@@ -15,7 +15,7 @@ namespace Dotective.Tests
 
             Run(mock.Object);
 
-            mock.Verify(p => p.Initialize(), Times.Once);
+            mock.Verify(p => p.Initialize(It.IsNotNull<IProfilingContext>()), Times.Once);
         }
 
         [TestMethod]
